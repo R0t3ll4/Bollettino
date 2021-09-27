@@ -1,0 +1,28 @@
+{
+  "name": "scraping",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.10",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/R0t3ll4/XCS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/R0t3ll4/XCS/issues"
+  },
+  "homepage": "https://github.com/R0t3ll4/XCS#readme",
+  "description": ""
+}

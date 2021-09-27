@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>VDA Cross Country Skiing</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+	<header id="main-header">
+		<div class="container">
+			<h1>VDA Cross Country Skiing</h1>
+		</div>
+	</header>
+
+	<nav id="navbar">
+		<div class="container">
+			<ul>
+				<li><a class="active" href="index.html">Home</a></li>
+				<li><a href="about.html">About</a></li>
+				<li><a href="contact.html">Contact</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container">
+		<section id="main">
+			<h1>Welcome</h1>
+			<p>This website keeps you updated on nordic ski tracks of Aosta Valley (Italy)</p>
+			<ul>
+				<li><button class="btn" id="getComprensorio">Find Locations</button>: search for all nordic ski
+					locations</li>
+				<li><button class="btn" id="getpiste">Open Tracks</button>: search for km of open tracks</li>
+				<li><button class="btn" id="getkm">Tot of km</button>: locations sorted by their total lenght of tracks
+				</li>
+			</ul>
+
+		</section>
+		<div id="output"></div>
+	</div>
+
+	<script>
+		document.getElementById('getComprensorio').addEventListener('click', getComprensorio);
+
+		function getComprensorio() {
+			fetch('/api')
+				.then((res) => res.json())
+				.then((data) => {
+					let output = '<h2 class="mb-4">Ski Resorts</h2>';
+					data.data.forEach(function (data) {
+						output += `
+            <ul>
+              <li class="json_1"> ${data.Comprensorio}</li>
+              <li class="json"><strong>Updated:</strong> ${data.Aggiornamento} at ${data.Ora_aggiornamento}</li>
+			  <li class="json"><strong>Snow Depth:</strong> min= ${data.Neve_min}, max= ${data.Neve_max}</li>
+			  <li class="json"><strong>Type of Snow:</strong> ${data.Tipo_neve}</li>
+			  <li class="json"><strong>Km of Open Tracks:</strong> ${data.Piste_aperte}</li>
+			  <li class="json"><strong>Total km of Tracks:</strong> ${data.Tot_piste}</li>
+            </ul>
+          `;
+					});
+					document.getElementById('output').innerHTML = output;
+				})
+				.catch((error) => {
+					alert("Si è verificato un errore");
+					console.error('Error:', error);
+				});
+		}
+	</script>
+	<script>
+		document.getElementById('getpiste').addEventListener('click', getpiste);
+
+		function getpiste() {
+			fetch('/api')
+				.then((res) => res.json())
+				.then((data) => {
+					data.data.sort(function (a, b) {
+						return b.Piste_aperte - a.Piste_aperte;
+					});
+					let output = '<h2 class="mb-4">Open Tracks</h2>';
+					data.data.forEach(function (data) {
+						output += `
+		  <ul>
+		  <li class="json_1">${data.Comprensorio}</li>
+		  <li class="json"><strong>Km of Open Tracks:</strong> ${data.Piste_aperte}</li>
+		  <li class="json"><strong>Updated:</strong> ${data.Aggiornamento} at ${data.Ora_aggiornamento}</li>
+		  </ul>
+		  `;
+					});
+					document.getElementById('output').innerHTML = output;
+				})
+				.catch((error) => {
+					alert("Si è verificato un errore");
+					console.error('Error:', error);
+				});
+		}
+
+	</script>
+	<script>
+		document.getElementById('getkm').addEventListener('click', getkm);
+
+		function getkm() {
+			fetch('/api')
+				.then((res) => res.json())
+				.then((data) => {
+					data.data.sort(function (a, b) {
+						return b.Tot_piste - a.Tot_piste;
+					});
+					let output = '<h2 class="mb-4">Total Lenght of Ski Tracks</h2>';
+					data.data.forEach(function (data) {
+						output += `
+	  <ul>
+		<li class="json_1">${data.Comprensorio}</li>
+		 <li class="json"><strong>Total km of Tracks:</strong> ${data.Tot_piste}</li>
+		 <li class="json"><strong>Updated:</strong> ${data.Aggiornamento} at ${data.Ora_aggiornamento}</li>
+		 </ul>
+	  `;
+					});
+					document.getElementById('output').innerHTML = output;
+				})
+				.catch((error) => {
+					alert("Si è verificato un errore");
+					console.error('Error:', error);
+				});
+		}
+
+	</script>
+	<footer id="main-footer">
+		<p>&copy; 2021 SSRI Online Project</p>
+	</footer>
+</body>
+
+</html>
